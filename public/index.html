@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PIN-DROP</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/vt323.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="screen" id="screen">
+    <header>
+      <pre class="banner" aria-hidden="true"> ____ ___ _   _       ____  ____   ___  ____
+|  _ \_ _| \ | |     |  _ \|  _ \ / _ \|  _ \
+| |_) | ||  \| |_____| | | | |_) | | | | |_) |
+|  __/| || |\  |_____| |_| |  _ &lt;| |_| |  __/
+|_|  |___|_| \_|     |____/|_| \_\\___/|_|</pre>
+      <h1 class="title-small">PIN-DROP</h1>
+      <p class="sub"><span>FILE TRANSFER TERMINAL</span> &middot; <span>MAX <b data-max>10</b> MB</span> &middot; <span>4-DIGIT PIN</span></p>
+      <div class="rule" aria-hidden="true"></div>
+    </header>
+
+    <!-- BOOT ---------------------------------------------------------- -->
+    <section id="boot" class="view" aria-hidden="true">
+      <pre id="boot-text"></pre>
+    </section>
+
+    <!-- MENU ---------------------------------------------------------- -->
+    <section id="menu" class="view" hidden>
+      <p>SELECT AN OPTION:</p>
+      <ul class="menu">
+        <li><button type="button" class="menu-item" data-go="send"><span class="key">[1]</span> SEND A FILE</button></li>
+        <li><button type="button" class="menu-item" data-go="receive"><span class="key">[2]</span> RECEIVE A FILE</button></li>
+      </ul>
+      <p class="prompt">READY.<span class="cursor" aria-hidden="true"></span></p>
+    </section>
+
+    <!-- SEND ---------------------------------------------------------- -->
+    <section id="send" class="view" hidden>
+      <h2>&gt; SEND A FILE</h2>
+
+      <div id="send-form">
+        <label class="drop" id="drop">
+          <input type="file" id="file" class="sr-only">
+          <span class="drop-art" aria-hidden="true">+-----------------+
+| [ INSERT DISK ] |
++-----------------+</span>
+          <span class="drop-text">CLICK TO CHOOSE A FILE, OR DROP IT HERE</span>
+        </label>
+        <p id="file-info" class="dim">NO FILE SELECTED.</p>
+
+        <fieldset class="opts">
+          <legend>ERASE FILE AFTER</legend>
+          <div id="ttl-options" class="radios"></div>
+        </fieldset>
+
+        <label class="check">
+          <input type="checkbox" id="once" class="sr-only">
+          <span class="box" aria-hidden="true"></span>
+          ALSO ERASE AFTER THE FIRST DOWNLOAD
+        </label>
+
+        <div class="actions">
+          <button type="button" class="btn" id="send-go" disabled>[ TRANSMIT ]</button>
+          <button type="button" class="btn ghost" data-go="menu">[ESC] MENU</button>
+        </div>
+        <p class="dim small" id="accepts"></p>
+      </div>
+
+      <div id="send-progress" hidden>
+        <p>TRANSMITTING <span id="up-name"></span> ...</p>
+        <pre class="bar" id="up-bar"></pre>
+      </div>
+
+      <div id="send-done" hidden>
+        <p>TRANSMISSION COMPLETE. YOUR PIN IS:</p>
+        <div class="pin" id="pin-out" aria-live="polite"></div>
+        <p>ON THE OTHER DEVICE: OPEN <span class="hl" id="host"></span>, PRESS [2] RECEIVE AND ENTER THE PIN.</p>
+        <pre class="readout" id="send-readout"></pre>
+        <div class="actions">
+          <button type="button" class="btn" id="burn">[ ERASE NOW ]</button>
+          <button type="button" class="btn ghost" id="send-again">[ SEND ANOTHER ]</button>
+          <button type="button" class="btn ghost" data-go="menu">[ESC] MENU</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECEIVE ------------------------------------------------------- -->
+    <section id="receive" class="view" hidden>
+      <h2>&gt; RECEIVE A FILE</h2>
+
+      <form id="pin-form" autocomplete="off" novalidate>
+        <label for="pin-in">ENTER 4-DIGIT PIN:</label>
+        <div class="pin-row">
+          <input id="pin-in" class="pin-in" type="text" inputmode="numeric" maxlength="4"
+                 autocomplete="one-time-code" spellcheck="false" placeholder="____" aria-describedby="pin-help">
+          <button type="submit" class="btn" id="lookup">[ LOOKUP ]</button>
+        </div>
+        <p class="dim small" id="pin-help">THE PIN IS SHOWN ON THE DEVICE THAT SENT THE FILE.</p>
+      </form>
+
+      <div id="found" hidden>
+        <pre class="readout" id="found-readout"></pre>
+        <div class="actions">
+          <button type="button" class="btn" id="get">[ DOWNLOAD ]</button>
+          <button type="button" class="btn ghost" data-go="menu">[ESC] MENU</button>
+        </div>
+      </div>
+
+      <div id="recv-progress" hidden>
+        <p>RECEIVING ...</p>
+        <pre class="bar" id="down-bar"></pre>
+      </div>
+
+      <div id="recv-done" hidden>
+        <p>DOWNLOAD COMPLETE. CHECK YOUR DOWNLOADS FOLDER.</p>
+        <p class="dim" id="recv-note"></p>
+        <div class="actions">
+          <button type="button" class="btn" id="recv-again">[ RECEIVE ANOTHER ]</button>
+          <button type="button" class="btn ghost" data-go="menu">[ESC] MENU</button>
+        </div>
+      </div>
+    </section>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <footer>
+      <div class="rule" aria-hidden="true"></div>
+      <p class="dim small">
+        FILES ARE ERASED AUTOMATICALLY &middot;
+        <button type="button" class="link" id="theme">[C] COLOUR</button>
+      </p>
+    </footer>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>

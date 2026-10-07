@@ -1,0 +1,15 @@
+{
+  "name": "pin-drop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Retro file drop: upload a file, get a 4-digit PIN, download it on another device. Runs on Cloudflare Workers (free plan).",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node test/smoke.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.148.0"
+  }
+}
